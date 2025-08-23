@@ -2,117 +2,409 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>Kalpana AI — Imagine. Create. Share.</title>
   <meta name="description" content="Kalpana AI is a next‑level, fast and free AI image generator. Type a prompt, choose a style, and watch ideas turn into stunning visuals." />
   <style>
-    :root{
-      --bg:#0b0c10; --card:#111218; --muted:#1a1c25; --text:#e8e8f0; --sub:#b8b9c9; --brand:#7c5cff; --brand-2:#17d6e3; --ok:#22c55e; --warn:#f59e0b;
-      --radius:22px;
+    :root {
+      --bg: #0b0c10;
+      --card: #111218;
+      --muted: #1a1c25;
+      --text: #e8e8f0;
+      --sub: #b8b9c9;
+      --brand: #7c5cff;
+      --brand-2: #17d6e3;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --radius: 16px;
     }
-    *{box-sizing:border-box;}
-    html,body{height:100%; margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial; background: radial-gradient(1200px 600px at 80% -10%, rgba(124,92,255,.18), transparent 60%), radial-gradient(900px 500px at -10% 10%, rgba(23,214,227,.10), transparent 60%), var(--bg); color:var(--text);}
-    a{color:inherit;text-decoration:none;}
-    .container{max-width:1100px;margin:0 auto;padding:20px; opacity: 0; transform: translateY(40px); transition: opacity 1s ease, transform 1s ease;}
-    .container.show {opacity: 1; transform: translateY(0);}
-    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0; flex-wrap: wrap;}
-    .brand{display:flex;gap:10px;align-items:center;}
-    .logo{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--brand-2)); display:grid;place-items:center; font-weight:800; user-select:none;}
-    .logo span{filter:drop-shadow(0 2px 6px rgba(0,0,0,.35));}
-    .brand h1{font-size:18px;margin:0;letter-spacing:.5px; user-select:none;}
-    .nav .actions{display:flex;gap:10px; flex-wrap: wrap;}
-    .btn{border:1px solid rgba(255,255,255,.12); background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); color:var(--text); padding:10px 14px; border-radius:12px; cursor:pointer; transition:.2s; backdrop-filter: blur(8px); user-select:none;}
-    .btn:hover{transform:translateY(-1px); border-color:rgba(255,255,255,.20);}
-    .btn.primary{background:linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%); border:none; color:white; box-shadow:0 10px 30px rgba(124,92,255,.25);}
-    .chip{padding:8px 12px;border:1px solid rgba(255,255,255,.10);border-radius:999px;background:rgba(255,255,255,.03);cursor:pointer; user-select:none;}
-    .chip.active{background:linear-gradient(135deg, rgba(124,92,255,.25), rgba(23,214,227,.25)); border-color:transparent;}
-    .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:center;padding:28px 0 8px}
-    @media (max-width: 900px){.hero{grid-template-columns:1fr;}}
-    .title{font-size:44px;line-height:1.1;margin:0 0 10px;font-weight:800; user-select:none;}
-    .grad{background:linear-gradient(135deg,var(--brand),var(--brand-2)); -webkit-background-clip:text; background-clip:text; color:transparent;}
-    .subtitle{color:var(--sub);font-size:16px;margin:0 0 18px; user-select:none;}
-    .badges{display:flex;gap:10px;flex-wrap:wrap;}
-    .badge{font-size:12px;padding:6px 10px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.04); user-select:none;}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.10); padding:16px; border-radius:var(--radius); box-shadow:0 12px 40px rgba(0,0,0,.35);}
-    .generator{position:relative;}
-    .row{display:flex;gap:10px;}
-    .row > *{flex:1;}
-    textarea{width:100%;min-height:70px;resize:vertical;background:var(--muted);color:var(--text);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px;font-size:15px;outline:none;}
-    select,input[type="number"]{width:100%;background:var(--muted);color:var(--text);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 12px;font-size:14px;outline:none;}
-    label{font-size:12px;color:var(--sub);margin-bottom:6px;display:block; user-select:none;}
-    .panel{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
-    @media (max-width:700px){.panel{grid-template-columns:1fr;}}
-    .styles{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
-    .preview{display:grid;place-items:center;background:#0b0c10;border:1px dashed rgba(255,255,255,.1);border-radius:16px;min-height:360px;position:relative;overflow:hidden;}
-    .preview img{max-width:100%;max-height:520px;border-radius:12px; user-select:none;}
-    .loader{position:absolute;inset:0;display:grid;place-items:center;backdrop-filter:blur(2px);}
-    .pulse{width:18px;height:18px;border-radius:999px;background:var(--brand);animation:pulse 0.9s infinite alternate ease-in-out;box-shadow:0 0 0 0 rgba(124,92,255,.5);}
-    @keyframes pulse{to{transform:scale(1.4);box-shadow:0 0 20px 8px rgba(124,92,255,.25);}}
-    .status{margin-top:10px;color:var(--sub);font-size:13px; user-select:none;}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-    @media (max-width:1000px){.grid{grid-template-columns:1fr;}}
-    .gallery{margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-    @media (max-width:900px){.gallery{grid-template-columns:repeat(2,1fr);}}
-    .gallery img{width:100%;height:140px;object-fit:cover;border-radius:12px;border:1px solid rgba(255,255,255,.08); cursor:pointer;}
-    .section{padding:36px 0;}
-    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-    @media (max-width:900px){.features{grid-template-columns:1fr;}}
-    .feature{padding:16px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.03); user-select:none;}
-    .feature h4{margin-top:0;}
-    .feature p{margin-bottom:0;}
-    .footer{padding:30px 0;color:var(--sub);font-size:13px;text-align:center; user-select:none;}
-    .note{font-size:12px;color:#99a0b3;margin-top:8px; user-select:none;}
-    .right{display:flex;gap:8px;justify-content:flex-end;}
-    .ghost{background:transparent;border:1px dashed rgba(255,255,255,.15);}
-    .hidden{display:none;}
-    button:disabled {
-      cursor: not-allowed;
-      opacity: 0.6;
+    * {
+      box-sizing: border-box;
     }
-    /* Namaste Popup */
-    #namastePopup {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.75);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      opacity: 1;
-      animation: fadeInScale 0.6s forwards;
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
+      background: radial-gradient(
+          1200px 600px at 80% -10%,
+          rgba(124, 92, 255, 0.18),
+          transparent 60%
+        ),
+        radial-gradient(900px 500px at -10% 10%, rgba(23, 214, 227, 0.1), transparent 60%),
+        var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
-    #namastePopup.hidden {
-      animation: fadeOutScale 0.5s forwards;
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 20px;
       opacity: 0;
-      pointer-events: none;
+      transform: translateY(40px);
+      transition: opacity 1s ease, transform 1s ease;
     }
-    #namastePopup .content {
-      background: linear-gradient(135deg, #7c5cff, #17d6e3);
-      padding: 40px 60px;
-      border-radius: 20px;
-      box-shadow: 0 0 30px rgba(124, 92, 255, 0.7);
+    .container.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      font-size: 24px;
+    }
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      user-select: none;
+      font-size: 28px;
+    }
+    .nav .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 18px;
+    }
+    .btn {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+      color: var(--text);
+      padding: 18px 30px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+      backdrop-filter: blur(8px);
+      user-select: none;
+      white-space: nowrap;
+      font-weight: 700;
+      font-size: 20px;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.28);
+    }
+    .btn.primary {
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+      border: none;
       color: white;
-      font-size: 2.5rem;
-      font-weight: 800;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      box-shadow: 0 12px 40px rgba(124, 92, 255, 0.35);
+    }
+    .chip {
+      padding: 12px 18px;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+      cursor: pointer;
+      user-select: none;
+      font-size: 16px;
+      white-space: nowrap;
+      transition: background-color 0.3s ease;
+      flex-shrink: 0;
+    }
+    .chip.active {
+      background: linear-gradient(135deg, rgba(124, 92, 255, 0.25), rgba(23, 214, 227, 0.25));
+      border-color: transparent;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 30px;
+      align-items: center;
+      padding: 28px 0 8px;
+    }
+    @media (max-width: 800px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+    .title {
+      font-size: 42px;
+      line-height: 1.1;
+      margin: 0 0 14px;
+      font-weight: 900;
+      user-select: none;
+    }
+    .grad {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .subtitle {
+      color: var(--sub);
+      font-size: 20px;
+      margin: 0 0 20px;
+      user-select: none;
+      max-width: 600px;
+      line-height: 1.4;
+    }
+    .badges {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      font-size: 14px;
+      padding: 10px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      user-select: none;
+      white-space: nowrap;
+    }
+    .card {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      padding: 22px;
+      border-radius: var(--radius);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+      max-width: 100%;
+    }
+    .generator {
+      position: relative;
+    }
+    .row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .row > * {
+      flex: 1 1 150px;
+      min-width: 140px;
+    }
+    textarea {
+      width: 100%;
+      min-height: 110px;
+      resize: vertical;
+      background: var(--muted);
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 18px;
+      font-size: 20px;
+      outline: none;
+      font-family: inherit;
+    }
+    select,
+    input[type="number"],
+    input[type="range"] {
+      width: 100%;
+      background: var(--muted);
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 18px;
+      outline: none;
+      font-family: inherit;
+    }
+    label {
+      font-size: 16px;
+      color: var(--sub);
+      margin-bottom: 10px;
+      display: block;
+      user-select: none;
+    }
+    .panel {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 18px;
+      margin-top: 16px;
+    }
+    @media (max-width: 700px) {
+      .panel {
+        grid-template-columns: 1fr;
+      }
+    }
+    .styles {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .preview {
+      display: grid;
+      place-items: center;
+      background: #0b0c10;
+      border: 1px dashed rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      min-height: 320px;
+      position: relative;
+      overflow: hidden;
+      margin-top: 25px;
+    }
+    .preview img {
+      max-width: 100%;
+      max-height: 560px;
+      border-radius: 16px;
+      user-select: none;
+      margin-bottom: 16px;
+      box-shadow: 0 0 20px rgba(124, 92, 255, 0.4);
+    }
+    .loader {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      backdrop-filter: blur(3px);
+      background: rgba(11, 12, 16, 0.6);
+      border-radius: 20px;
+    }
+    .pulse {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: var(--brand);
+      animation: pulse 1s infinite alternate ease-in-out;
+      box-shadow: 0 0 0 0 rgba(124, 92, 255, 0.6);
+    }
+    @keyframes pulse {
+      to {
+        transform: scale(1.5);
+        box-shadow: 0 0 30px 10px rgba(124, 92, 255, 0.3);
+      }
+    }
+    .status {
+      margin-top: 14px;
+      color: var(--sub);
+      font-size: 16px;
+      user-select: none;
+      min-height: 1.6rem;
+      word-break: break-word;
+      font-weight: 600;
+      text-align: center;
+    }
+    .gallery {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+    }
+    .gallery img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 14px;
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .gallery img:hover,
+    .gallery img:focus {
+      transform: scale(1.07);
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 10px var(--brand);
+    }
+    .section {
+      padding: 40px 0;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .feature {
+      padding: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      user-select: none;
+      transition: background 0.3s ease;
+    }
+    .feature:hover {
+      background: rgba(124, 92, 255, 0.25);
+    }
+    .feature h4 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+    .feature p {
+      margin-bottom: 0;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .footer {
+      padding: 30px 0;
+      color: var(--sub);
+      font-size: 14px;
       text-align: center;
       user-select: none;
-      transform-origin: center;
     }
-    @keyframes fadeInScale {
-      0% {opacity: 0; transform: scale(0.5);}
-      100% {opacity: 1; transform: scale(1);}
+    .note {
+      font-size: 12px;
+      color: #99a0b3;
+      margin-top: 8px;
+      user-select: none;
     }
-    @keyframes fadeOutScale {
-      0% {opacity:1; transform: scale(1);}
-      100% {opacity:0; transform: scale(0.5);}
+    .right {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+    .ghost {
+      background: transparent;
+      border: 1.5px dashed rgba(255, 255, 255, 0.15);
+      font-size: 16px;
+      padding: 12px 16px;
+    }
+    .hidden {
+      display: none;
+    }
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
     }
   </style>
 </head>
 <body>
   <!-- Namaste Popup -->
-  <div id="namastePopup">
-    <div class="content">नमस्ते 🙏<br>Welcome to Kalpana AI</div>
+  <div
+    id="namastePopup"
+    style="
+      position: fixed; inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 9999;
+      animation: fadeInScale 0.6s forwards;
+    "
+  >
+    <div
+      style="
+        background: linear-gradient(135deg, #7c5cff, #17d6e3);
+        padding: 40px 40px;
+        border-radius: 20px;
+        box-shadow: 0 0 30px rgba(124, 92, 255, 0.7);
+        color: white;
+        font-size: 2.5rem;
+        font-weight: 800;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        text-align: center;
+        user-select: none;
+        transform-origin: center;
+      "
+    >
+      नमस्ते 🙏<br />Welcome to Kalpana AI
+    </div>
   </div>
 
   <div class="container" id="container">
@@ -132,7 +424,12 @@
     <section class="hero" id="try">
       <div>
         <h2 class="title">Imagine it. <span class="grad">Kalpana</span> makes it real.</h2>
-        <p class="subtitle">Kalpana AI is your daily‑life image generator — fast, free and sharable. Type a prompt, choose a style, and watch ideas turn into scroll‑stopping visuals. Perfect for thumbnails, ads, posters, and pure fun.</p>
+        <p class="subtitle">
+          Kalpana AI is your daily‑life image generator — fast, free and
+          sharable. Type a prompt, choose a style, and watch ideas turn into
+          scroll‑stopping visuals. Perfect for thumbnails, ads, posters, and
+          pure fun.
+        </p>
         <div class="badges">
           <span class="badge">⚡ Community GPU Powered</span>
           <span class="badge">🖼️ High‑quality 512×512</span>
@@ -143,23 +440,64 @@
       <div class="card">
         <div class="generator">
           <label for="prompt">Your prompt</label>
-          <textarea id="prompt" placeholder="e.g. neon cyberpunk street, rain reflections, cinematic, ultra realistic"></textarea>
+          <textarea
+            id="prompt"
+            placeholder="e.g. neon cyberpunk street, rain reflections, cinematic, ultra realistic"
+            aria-label="Prompt input"
+          ></textarea>
 
-          <div class="panel">
+          <div class="panel" role="group" aria-label="Generation settings">
             <div>
-              <label>Style presets</label>
-              <div class="styles" id="styleChips">
-                <div class="chip" data-style=", ultra realistic, 35mm photo, sharp lighting">Realistic</div>
-                <div class="chip" data-style=", digital art, trending on artstation, vibrant colors">Digital Art</div>
-                <div class="chip" data-style=", anime style, clean lines, studio ghibli vibes">Anime</div>
-                <div class="chip" data-style=", watercolor painting, soft brush, pastel tones">Watercolor</div>
-                <div class="chip" data-style=", low poly 3D render, global illumination">3D</div>
-                <div class="chip active" data-style="">None</div>
+              <label for="styleChips">Style presets</label>
+              <div
+                class="styles"
+                id="styleChips"
+                role="list"
+                aria-label="Style presets"
+              >
+                <div
+                  class="chip"
+                  data-style=", ultra realistic, 35mm photo, sharp lighting"
+                  role="listitem"
+                  tabindex="0"
+                  >Realistic</div
+                >
+                <div
+                  class="chip"
+                  data-style=", digital art, trending on artstation, vibrant colors"
+                  role="listitem"
+                  tabindex="0"
+                  >Digital Art</div
+                >
+                <div
+                  class="chip"
+                  data-style=", anime style, clean lines, studio ghibli vibes"
+                  role="listitem"
+                  tabindex="0"
+                  >Anime</div
+                >
+                <div
+                  class="chip"
+                  data-style=", watercolor painting, soft brush, pastel tones"
+                  role="listitem"
+                  tabindex="0"
+                  >Watercolor</div
+                >
+                <div
+                  class="chip"
+                  data-style=", low poly 3D render, global illumination"
+                  role="listitem"
+                  tabindex="0"
+                  >3D</div
+                >
+                <div class="chip active" data-style="" role="listitem" tabindex="0">
+                  None
+                </div>
               </div>
             </div>
             <div>
               <label for="sampler">Sampler</label>
-              <select id="sampler">
+              <select id="sampler" name="sampler">
                 <option value="k_euler">k_euler (fast)</option>
                 <option value="k_euler_a">k_euler_a</option>
                 <option value="k_lms">k_lms</option>
@@ -168,7 +506,7 @@
             </div>
             <div>
               <label for="size">Size</label>
-              <select id="size">
+              <select id="size" name="size">
                 <option value="512x512">512 × 512</option>
                 <option value="640x640">640 × 640</option>
                 <option value="768x512">768 × 512</option>
@@ -176,223 +514,346 @@
               </select>
             </div>
             <div>
-              <label for="steps">img level</label>
-              <input id="steps" type="number" min="10" max="50" value="200" />
+              <label for="steps">Img Level</label>
+              <input
+                id="steps"
+                type="number"
+                min="10"
+                max="50"
+                value="100"
+                aria-valuemin="10"
+                aria-valuemax="50"
+                aria-valuenow="25"
+              />
+            </div>
+            <div>
+              <label for="quantity">Number of images</label>
+              <input
+                type="range"
+                id="quantity"
+                name="quantity"
+                min="1"
+                max="10"
+                value="4"
+                oninput="document.getElementById('quantityValue').textContent = this.value"
+                aria-valuemin="1"
+                aria-valuemax="10"
+                aria-valuenow="4"
+              />
+              <div id="quantityValue" style="color: var(--sub); margin-top: 4px;">
+                4
+              </div>
             </div>
           </div>
 
-          <div class="row" style="margin-top:12px">
-            <button class="btn primary" id="generate">Generate</button>
-            <button class="btn" id="download" disabled>Download</button>
+          <div class="row" style="margin-top: 12px">
+            <button
+              class="btn primary"
+              id="generate"
+              aria-label="Generate image(s)"
+              style="font-size: 22px; padding: 20px;"
+            >
+              Generate
+            </button>
+            <button
+              class="btn"
+              id="download"
+              disabled
+              aria-label="Download images"
+              style="font-size: 22px; padding: 20px;"
+            >
+              Download
+            </button>
           </div>
-          <div class="status" id="status">Ready.</div>
+          <div
+            class="status"
+            id="status"
+            role="status"
+            aria-live="polite"
+            style="font-size: 18px; margin-top: 12px;"
+          >
+            Ready.
+          </div>
 
-          <div class="preview" id="preview">
-            <div class="placeholder" style="opacity:.7; user-select:none;">Your image will appear here</div>
-            <div class="loader hidden" id="loader"><div class="pulse"></div></div>
+          <div
+            class="preview"
+            id="preview"
+            aria-live="polite"
+            style="min-height: 400px;"
+          >
+            <div
+              class="placeholder"
+              style="opacity: 0.7; user-select: none; font-size: 18px;"
+            >
+              Your images will appear here
+            </div>
+            <div class="loader hidden" id="loader">
+              <div class="pulse"></div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- GALLERY -->
-    <section class="section">
-      <h3 style="margin:0 0 8px">Recent Generations</h3>
-      <p class="subtitle" style="margin:0 0 10px">Kalpana keeps the last few images in your browser for quick reuse. Nothing is uploaded to our servers.</p>
-      <div class="gallery" id="gallery"></div>
+    <section class="section" aria-label="Recent Generations">
+      <h3 style="margin: 0 0 8px; font-size: 22px">Recent Generations</h3>
+      <p class="subtitle" style="margin: 0 0 10px; font-size: 16px">
+        Kalpana keeps the last few images in your browser for quick reuse.
+        Nothing is uploaded to our servers.
+      </p>
+      <div class="gallery" id="gallery" role="list"></div>
     </section>
 
     <!-- FEATURES -->
-    <section class="section">
+    <section class="section" aria-label="Features">
       <div class="features">
-        <div class="feature">
+        <article class="feature" style="font-size: 18px; padding: 20px;">
           <h4>Daily‑life Friendly</h4>
-          <p>Create ad creatives, thumbnails, posters, and product shots — without design skills.</p>
-        </div>
-        <div class="feature">
+          <p>
+            Create ad creatives, thumbnails, posters, and product shots — without
+            design skills.
+          </p>
+        </article>
+        <article class="feature" style="font-size: 18px; padding: 20px;">
           <h4>Blazing Simple</h4>
           <p>Type a prompt, choose a style, and click Generate. That’s it. No complicated settings needed.</p>
-        </div>
-        <div class="feature">
+        </article>
+        <article class="feature" style="font-size: 18px; padding: 20px;">
           <h4>Privacy First</h4>
-          <p>Your prompts and images stay only in your browser local storage. No data is sent except the image request to Stable Horde.</p>
-        </div>
+          <p>
+            Your prompts and images stay only in your browser local storage. No
+            data is sent except the image request to Stable Horde.
+          </p>
+        </article>
       </div>
     </section>
 
     <!-- PRICING / CTA -->
-    <section class="section" id="pricing">
+    <section class="section" id="pricing" aria-label="Pricing">
       <div class="card">
         <div class="grid">
           <div>
-            <h3 style="margin:0 0 6px">Lifetime Access — <span class="grad">₹49</span></h3>
-            <p class="subtitle">Unlimited generations with community GPUs. Perfect for students, creators and small businesses.</p>
-            <ul style="margin:0 0 10px 16px; color:var(--sub)">
+            <h3 style="margin: 0 0 6px; font-size: 20px">
+              Lifetime Access — <span class="grad">₹49</span>
+            </h3>
+            <p class="subtitle" style="font-size: 16px">
+              Unlimited generations with community GPUs. Perfect for students,
+              creators and small businesses.
+            </p>
+            <ul style="margin: 0 0 10px 16px; color: var(--sub); font-size: 14px;">
               <li>Unlimited prompts</li>
               <li>High‑quality results</li>
               <li>Style presets & easy download</li>
             </ul>
-            <div class="note">Powered by the Stable Horde network. Availability depends on volunteer GPUs.</div>
+            <div class="note" style="font-size: 13px;">
+              Powered by the Stable Horde network. Availability depends on volunteer
+              GPUs.
+            </div>
           </div>
-          <div class="right">
-            <a class="btn primary" href="#try">Start Creating</a>
-            <button class="btn ghost" id="clearHistory">Clear History</button>
-          </div>
+          <div class="right"></div>
         </div>
       </div>
     </section>
 
-    <footer class="footer">© <span id="year"></span> Kalpana AI · Built for imagination ✨</footer>
+    <footer class="footer" aria-label="Footer" style="font-size: 14px; padding: 20px 0;">
+      © <span id="year"></span> Kalpana AI · Built for imagination ✨
+    </footer>
   </div>
 
   <script>
     const els = {
-      chips: document.querySelectorAll('#styleChips .chip'),
-      prompt: document.getElementById('prompt'),
-      sampler: document.getElementById('sampler'),
-      size: document.getElementById('size'),
-      steps: document.getElementById('steps'),
-      status: document.getElementById('status'),
-      generate: document.getElementById('generate'),
-      download: document.getElementById('download'),
-      preview: document.getElementById('preview'),
-      loader: document.getElementById('loader'),
-      gallery: document.getElementById('gallery'),
-      year: document.getElementById('year'),
-      clearHistory: document.getElementById('clearHistory'),
-      container: document.getElementById('container'),
-      namastePopup: document.getElementById('namastePopup')
+      chips: document.querySelectorAll("#styleChips .chip"),
+      prompt: document.getElementById("prompt"),
+      sampler: document.getElementById("sampler"),
+      size: document.getElementById("size"),
+      steps: document.getElementById("steps"),
+      quantity: document.getElementById("quantity"),
+      status: document.getElementById("status"),
+      generate: document.getElementById("generate"),
+      download: document.getElementById("download"),
+      preview: document.getElementById("preview"),
+      loader: document.getElementById("loader"),
+      gallery: document.getElementById("gallery"),
+      year: document.getElementById("year"),
+      clearHistory: document.getElementById("clearHistory"),
+      container: document.getElementById("container"),
+      namastePopup: document.getElementById("namastePopup"),
     };
 
-    let activeStyle = '';
+    let activeStyle = "";
 
     // Footer year
     els.year.textContent = new Date().getFullYear();
 
     // Show container after namaste popup with animation
     function hideNamastePopup() {
-      els.namastePopup.classList.add('hidden');
+      els.namastePopup.classList.add("hidden");
       setTimeout(() => {
-        els.namastePopup.style.display = 'none';
-        els.container.classList.add('show');
+        els.namastePopup.style.display = "none";
+        els.container.classList.add("show");
       }, 500);
     }
-    // Show Namaste popup on load
-    window.addEventListener('load', () => {
+    window.addEventListener("load", () => {
       setTimeout(hideNamastePopup, 2500);
     });
 
-    // Style chips toggle
-    els.chips.forEach(ch => {
-      ch.addEventListener('click', () => {
-        els.chips.forEach(x => x.classList.remove('active'));
-        ch.classList.add('active');
-        activeStyle = ch.dataset.style || '';
+    // Style chips toggle with keyboard accessibility
+    els.chips.forEach((ch) => {
+      ch.addEventListener("click", () => {
+        els.chips.forEach((c) => c.classList.remove("active"));
+        ch.classList.add("active");
+        activeStyle = ch.dataset.style || "";
         if (activeStyle && els.prompt.value && !els.prompt.value.includes(activeStyle)) {
-          els.status.textContent = 'Preset applied.';
+          els.status.textContent = "Preset applied.";
         }
-      })
+      });
+      ch.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          ch.click();
+        }
+      });
     });
 
     // History management
-    const LS_HISTORY = 'kalpana_history_fixed_v1';
+    const LS_HISTORY = "kalpana_history_fixed_v1";
 
     function pushHistory(url) {
-      let h = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
-      h.unshift(url);
-      h = h.slice(0, 12);
-      localStorage.setItem(LS_HISTORY, JSON.stringify(h));
+      let hist = JSON.parse(localStorage.getItem(LS_HISTORY) || "[]");
+      hist.unshift(url);
+      hist = hist.slice(0, 24); // Store more images since we generate multiple
+      localStorage.setItem(LS_HISTORY, JSON.stringify(hist));
       renderHistory();
     }
 
     function renderHistory() {
-      const h = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
-      els.gallery.innerHTML = h.map(u => `<img src="${u}" loading="lazy" alt="history" onclick="window.open('${u}', '_blank')" />`).join('');
+      const hist = JSON.parse(localStorage.getItem(LS_HISTORY) || "[]");
+      els.gallery.innerHTML = hist
+        .map(
+          (url) =>
+            `<img src="${url}" loading="lazy" alt="Recently generated image" tabindex="0" onclick="window.open('${url}', '_blank')" />`
+        )
+        .join("");
     }
     renderHistory();
 
-    els.clearHistory.addEventListener('click', () => {
+    els.clearHistory?.addEventListener("click", () => {
       localStorage.removeItem(LS_HISTORY);
       renderHistory();
-      els.status.textContent = 'History cleared.'
+      els.status.textContent = "History cleared.";
     });
 
-    // Download handler
-    els.download.addEventListener('click', () => {
-      const img = els.preview.querySelector('img');
+    // Download handler (downloads currently displayed image only)
+    els.download.addEventListener("click", () => {
+      const img = els.preview.querySelector("img");
       if (!img) return;
-      const a = document.createElement('a');
-      a.href = img.src; a.download = 'kalpana.png';
+      const a = document.createElement("a");
+      a.href = img.src;
+      a.download = "kalpana.png";
       document.body.appendChild(a);
       a.click();
       a.remove();
     });
 
-    const API_KEY = "zjySYWH-R4cwD0VYEQl4HQ"; // Fixed API key (hint: do not share publicly for production)
+    const API_KEY = "zjySYWH-R4cwD0VYEQl4HQ"; // Keep this secure in production
 
-    els.generate.addEventListener('click', generateImage);
+    els.generate.addEventListener("click", generateImages);
 
-    async function generateImage() {
-      let prompt = (els.prompt.value || '').trim();
-      if (!prompt) {
-        els.status.textContent = 'Enter a prompt to begin.';
+    async function generateImages() {
+      let promptVal = (els.prompt.value || "").trim();
+      if (!promptVal) {
+        els.status.textContent = "Enter a prompt to begin.";
         return;
       }
-      if (activeStyle && !prompt.includes(activeStyle)) prompt += activeStyle;
+      if (activeStyle && !promptVal.includes(activeStyle)) promptVal += activeStyle;
 
-      const [w, h] = els.size.value.split('x').map(n => parseInt(n, 10));
-      const steps = Math.max(10, Math.min(50, parseInt(els.steps.value, 10) || 25));
-      const sampler = els.sampler.value;
+      const [w, h] = els.size.value.split("x").map((n) => parseInt(n, 10));
+      const stepsVal = Math.max(10, Math.min(50, parseInt(els.steps.value, 10) || 25));
+      const samplerVal = els.sampler.value;
+      const quantityVal = Math.max(1, Math.min(10, parseInt(els.quantity?.value || "4", 10) || 4));
 
-      // UI updates
-      els.loader.classList.remove('hidden');
+      els.loader.classList.remove("hidden");
       els.download.disabled = true;
-      els.status.textContent = 'Requesting a worker…';
-      els.preview.innerHTML = '<div class="placeholder" style="opacity:.7">Waiting for image…</div>';
+      els.status.textContent = `Requesting ${quantityVal} image${quantityVal > 1 ? "s" : ""}…`;
+      els.preview.innerHTML = "";
 
       try {
-        // Create generation task
-        const taskRes = await fetch('https://stablehorde.net/api/v2/generate/async', {
-          method: 'POST',
-          headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt, params: { sampler_name: sampler, width: w, height: h, steps, seed: "0", cfg_scale: 7 } })
+        // Create generation task with multiple samples
+        const taskRes = await fetch("https://stablehorde.net/api/v2/generate/async", {
+          method: "POST",
+          headers: { apikey: API_KEY, "Content-Type": "application/json" },
+          body: JSON.stringify({
+            prompt: promptVal,
+            params: {
+              sampler_name: samplerVal,
+              width: w,
+              height: h,
+              steps: stepsVal,
+              samples: quantityVal,
+              seed: "0",
+              cfg_scale: 7,
+            },
+          }),
         });
+
         const task = await taskRes.json();
-        if (!task.id) {
-          throw new Error(task.message || 'Failed to create task');
-        }
+        if (!task.id) throw new Error(task.message || "Failed to create task");
+
         els.status.textContent = `Task created: ${task.id} · waiting…`;
 
-        // Poll for completion up to ~6 minutes
-        let done = false, imgUrl = null, tries = 0;
-        while (!done && tries < 120) {
-          await new Promise(r => setTimeout(r, 3000));
+        let done = false,
+          images = [],
+          tries = 0;
+        // Poll for completion and display images one by one as they appear
+        while (!done && tries < 300) {
+          await new Promise((r) => setTimeout(r, 2500));
           tries++;
-          const stRes = await fetch(`https://stablehorde.net/api/v2/generate/status/${task.id}`);
-          const st = await stRes.json();
-          if (st.done && st.generations && st.generations.length) {
-            done = true;
-            imgUrl = st.generations[0].img;
-            break;
+          const statusResp = await fetch(`https://stablehorde.net/api/v2/generate/status/${task.id}`);
+          const statusJson = await statusResp.json();
+          if (
+            statusJson.done &&
+            statusJson.generations &&
+            statusJson.generations.length > images.length
+          ) {
+            // New images generated
+            const newImgs = statusJson.generations.slice(images.length);
+            for (const gen of newImgs) {
+              images.push(gen.img);
+              // Add progressively displayed images to preview
+              const imgEl = document.createElement("img");
+              imgEl.src = gen.img;
+              imgEl.alt = "Generated by Kalpana AI";
+              imgEl.style.marginBottom = "15px";
+              imgEl.style.maxWidth = "100%";
+              imgEl.style.borderRadius = "12px";
+              els.preview.appendChild(imgEl);
+            }
+            els.status.textContent = `Generated ${images.length}/${quantityVal} image${images.length > 1 ? "s" : ""}…`;
+            if (images.length >= quantityVal) {
+              done = true;
+              break;
+            }
+          } else {
+            const queuePos = typeof statusJson.queue_position === "number" ? ` · queue ${statusJson.queue_position}` : "";
+            els.status.textContent = `Generating${queuePos}… (${images.length}/${quantityVal} done)`;
           }
-          const queuePos = typeof st.queue_position === 'number' ? ` · queue ${st.queue_position}` : '';
-          els.status.textContent = `Generating${queuePos}…`;
         }
 
-        if (!imgUrl) throw new Error('No image returned. Try again.');
+        if (images.length === 0) throw new Error("No images returned. Try again.");
 
-        // Show image
-        els.preview.innerHTML = `<img src="${imgUrl}" alt="Generated by Kalpana AI" />`;
         els.download.disabled = false;
-        els.status.textContent = '✅ Image ready!';
-        pushHistory(imgUrl);
+        els.status.textContent = `✅ ${images.length} image${images.length > 1 ? "s" : ""} ready!`;
 
+        // Save images in history
+        images.forEach((img) => pushHistory(img));
       } catch (err) {
         console.error(err);
         els.status.textContent = `⚠️ ${err.message}`;
-        els.preview.innerHTML = '<div class="placeholder" style="opacity:.5;color:#f59e0b;">Error generating image.</div>';
+        els.preview.innerHTML =
+          '<div class="placeholder" style="opacity:.5;color:#f59e0b;">Error generating image(s).</div>';
       } finally {
-        els.loader.classList.add('hidden');
+        els.loader.classList.add("hidden");
       }
     }
   </script>
