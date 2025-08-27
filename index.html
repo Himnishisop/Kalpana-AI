@@ -153,8 +153,17 @@ async function generateImage(prompt, n, retry=false) {
 
     const data = await response.json();
 
+    // 2-second check for missing URL
+    const urlTimeout = setTimeout(() => {
+      if (!data.data || data.data.length === 0 || !data.data[0].url) {
+        generateBtn.textContent = "Try Different Prompt";
+        generateBtn.disabled = false;
+        generateBtn.classList.remove("anim");
+      }
+    }, 2000);
+
     if (data.error && data.error.code === "rate_limit_rpm_exceeded") {
-      generateBtn.textContent = "⏳ In Queue...";
+      clearTimeout(urlTimeout);
       setTimeout(() => {
         generateImage(prompt, n, true);
       }, 15000);
@@ -162,13 +171,15 @@ async function generateImage(prompt, n, retry=false) {
     }
 
     if (data.error) {
+      clearTimeout(urlTimeout);
       generateBtn.textContent = "❌ Error, Try Again";
       generateBtn.disabled = false;
       generateBtn.classList.remove("anim");
       return;
     }
 
-    if (data.data && data.data.length > 0) {
+    if (data.data && data.data.length > 0 && data.data[0].url) {
+      clearTimeout(urlTimeout);
       imagesDiv.innerHTML = "";
       data.data.forEach((imgObj) => {
         imagesDiv.innerHTML += `<img src="${imgObj.url}" alt="Generated Image">`;
@@ -199,3 +210,4 @@ generateBtn.addEventListener("click", () => {
 
 </body>
 </html>
+
